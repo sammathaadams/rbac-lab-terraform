@@ -219,16 +219,34 @@ Use `scripts/03-test-permissions.ps1` as a reference guide during your walkthrou
 
 ## Teardown
 
-This lab only creates role assignments — it does not delete the Lab 1 VMs when destroyed.
+Run teardown in this order — Lab 2 first, then Lab 1.
 
-```powershell
-# Remove the three RBAC role assignments only
+**Step 1 — Remove RBAC assignments (this repo)**
+
+```bash
+# From the rbac-lab-terraform directory
 terraform destroy
 ```
 
-The VMs, VNet, Resource Group, and Key Vault from Lab 1 remain intact. To tear down Lab 1 as well, run `az group delete -n RG-FileServerLab --yes` from the ntfs-lab-terraform repo.
+Type `yes` when prompted. This removes only the three role assignments. The VMs, VNet, and all Lab 1 infrastructure remain intact.
 
-> Since state is stored remotely, you do not need to manually clear it after destroy.
+**Step 2 — Destroy Lab 1 infrastructure**
+
+```bash
+az group delete -n RG-FileServerLab --yes --no-wait
+```
+
+This removes all Lab 1 VMs, disks, NICs, the VNet, NSG, and Key Vault.
+
+**Step 3 — Remove remote state storage (optional)**
+
+Only do this when you are completely done with all labs:
+
+```bash
+az group delete -n RG-TerraformState --yes --no-wait
+```
+
+> **Note:** Since state is stored remotely, you do not need to manually clear local state files after `terraform destroy`.
 
 ---
 
