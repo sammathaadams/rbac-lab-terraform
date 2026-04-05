@@ -16,7 +16,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "RG-TerraformState"
-    storage_account_name = "REPLACE_WITH_YOUR_STORAGE_ACCOUNT_NAME"
+    storage_account_name = "tfstatentfslab"
     container_name       = "tfstate"
     key                  = "rbac-lab.terraform.tfstate"
   }
